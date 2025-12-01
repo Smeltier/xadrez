@@ -1,1 +1,5 @@
-class
+
+public class King{ 
+    
+
+}
