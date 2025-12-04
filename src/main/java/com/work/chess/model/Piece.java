@@ -1,22 +1,25 @@
 package main.java.com.work.chess.model;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import main.java.com.work.chess.util.PieceColor;
 
 public abstract class Piece {
     private final String symbol;
-    private final boolean white;
+    private final PieceColor color;
     private Position position;
 
-    public Piece (String symbol, boolean isWhite, Position position) {
+    public Piece (String symbol, PieceColor color, Position position) {
         this.symbol = symbol;
-        this.white = isWhite;
+        this.color = color;
         this.position = position;
     }
 
-    public abstract List <Position> getValidMoves (Board board);
+    public abstract ArrayList <Position> getValidMoves (Board board);
 
-    public boolean isWhite () {
-        return this.white;
+    public PieceColor isWhite () {
+        return this.color;
     }
 
     public Position getPosition () {
