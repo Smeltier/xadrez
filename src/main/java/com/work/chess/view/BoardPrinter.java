@@ -15,22 +15,26 @@ public class BoardPrinter {
 
             for (int col = 1; col <= 8; col++) {
                 Piece piece = board.getPieceAt(new Position(row, col));
-                String symbol = BoardPrinter.getSymbol(piece);
-                System.out.print(symbol + " ");
-            }
+                
+                if (piece == null) {
+                    System.out.print("." + " ");
+                    continue;
+                }
+                
+                String symbol = piece.getSymbol();
 
+                if (symbol == null) {
+                    System.out.print("." + " ");
+                } else {
+                    System.out.print(symbol + " ");
+                }
+            }
+            
             System.out.println();
         }
 
         System.out.println("  a b c d e f g h");
         
         System.out.println();
-    }
-
-    private static String getSymbol (Piece piece) {
-        if (piece == null) return ".";
-
-        char c = piece.getClass().getSimpleName().charAt(0);
-        return piece.isWhite() ? ("" + Character.toUpperCase(c)) : ("" + Character.toLowerCase(c));
     }
 }
