@@ -1,10 +1,10 @@
 package main.java.com.work.chess.controller;
 
-import main.java.com.work.chess.model.Piece;
 import java.security.InvalidParameterException;
 
 import main.java.com.work.chess.model.Board;
 import main.java.com.work.chess.model.Position;
+import main.java.com.work.chess.model.chess_pieces.Piece;
 
 public class PieceMover {
     private PieceMover () {}
@@ -22,7 +22,7 @@ public class PieceMover {
     }
 
     private static void validateMove (Piece piece, Board board, Position newPosition) {
-        if (!piece.getValidMoves(board).contains(newPosition)) {
+        if (!board.isOnLimits(newPosition) || !piece.getValidMoves(board).contains(newPosition)) {
             throw new IllegalArgumentException("[WARNING]: Movimento Inválido.");
         }
     }
