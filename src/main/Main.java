@@ -1,4 +1,4 @@
-package main.java.com.work.chess;
+package main;
 
 import main.java.com.work.chess.view.BoardPrinter;
 import main.java.com.work.chess.model.Board;

@@ -9,7 +9,7 @@ import main.java.com.work.chess.model.Position;
 public class PieceMover {
     private PieceMover () {}
 
-    public static void move (Board board, Piece piece, Position newPosition) {
+    public static void move (Board board, Piece piece, Position newPosition) throws InvalidParameterException {
         PieceMover.validateMove(piece, board, newPosition);
 
         try {
