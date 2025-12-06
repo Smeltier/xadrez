@@ -3,14 +3,16 @@ package main.java.com.work.chess.model.chess_pieces;
 import java.util.ArrayList;
 
 import main.java.com.work.chess.model.Position;
+import main.java.com.work.chess.util.SymbolFactory;
 import main.java.com.work.chess.enums.PieceColor;
+import main.java.com.work.chess.enums.PieceType;
 import main.java.com.work.chess.model.Board;
 
 public class Pawn extends Piece {
     private boolean isFirstMove;
 
-    public Pawn (String symbol, PieceColor color, Position position) {
-        super(symbol, color, position);
+    public Pawn (PieceColor color, Position position) {
+        super(SymbolFactory.getSymbol(PieceType.PAWN, color), color, position);
         this.isFirstMove = true;
     }
 

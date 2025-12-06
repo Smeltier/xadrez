@@ -18,13 +18,13 @@ public class Board {
         if (!isOnLimits(position)) {
             throw new InvalidParameterException("Posição fora dos limites do tabuleiro.");
         }
-        board[position.getRow()][position.getCol()] = piece;
+        board[position.getRow() - 1][position.getCol() - 1] = piece;
     }
     
     public boolean isOnLimits (Position position) {
         int row = position.getRow() - 1;
         int col = position.getCol() - 1;
-        return row >= 0 && row < this.BOARDSIZE && col >= 0 && row < this.BOARDSIZE;
+        return row >= 0 && row < this.BOARDSIZE && col >= 0 && col < this.BOARDSIZE;
     }
 
     public int getBOARDSIZE() {

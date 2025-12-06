@@ -3,12 +3,14 @@ package main.java.com.work.chess.model.chess_pieces;
 import java.util.ArrayList;
 
 import main.java.com.work.chess.model.Position;
+import main.java.com.work.chess.util.SymbolFactory;
 import main.java.com.work.chess.enums.PieceColor;
+import main.java.com.work.chess.enums.PieceType;
 import main.java.com.work.chess.model.Board;
 
 public class Rook extends SlidingPiece {   
-    public Rook (String symbol, PieceColor color, Position position) {
-        super(symbol, color, position);
+    public Rook (PieceColor color, Position position) {
+        super(SymbolFactory.getSymbol(PieceType.ROOK, color), color, position);
     }
 
     @Override
