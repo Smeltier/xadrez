@@ -19,10 +19,6 @@ public abstract class Piece {
 
     public abstract ArrayList <Position> getValidMoves (Board board);
 
-    public PieceColor isWhite () {
-        return this.color;
-    }
-
     public Position getPosition () {
         return this.position;
     }
