@@ -13,4 +13,14 @@ public class Main {
         ConsoleUtils.clearScreen();
         BoardPrinter.print(board);
     }
+
+
+
+    System.out.println("=================================");
+         System.out.println("ESCOLHA UMA OPÇÃO PARA A PROMOÇÃO DO PEÃO")
+         System.out.println("1-Dama");
+         System.out.println("2-Torre");
+         System.out.println("3-Cavalo");
+         System.out.println("4-Bispo");
+       
 }
