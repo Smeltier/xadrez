@@ -93,6 +93,6 @@ public class Pawn extends Piece {
             }
         }
 
-        return new ArrayList <Position>();
+        return validMovies;
     }
 }
