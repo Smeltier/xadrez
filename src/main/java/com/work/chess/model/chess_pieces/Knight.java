@@ -13,6 +13,28 @@ public class Knight extends Piece {
 
     @Override
     public ArrayList <Position> getValidMoves (Board board) {
-        return new ArrayList <Position>();
+        ArrayList <Position> validMoves = new ArrayList<>();
+
+        int[] dx = {-2, -2, -1, -1,  1, 1,  2, 2};
+        int[] dy = {-1,  1, -2,  2, -2, 2, -1, 1};
+
+        for (int direction = 0; direction < 8; direction++) {
+            int targetRow = this.position.getRow() + dx[direction];
+            int targetCol = this.position.getCol() + dy[direction];
+
+            Position targetPosition = new Position(targetRow, targetCol);
+
+            if (!board.isOnLimits(targetPosition)) {
+                continue;
+            }
+
+            Piece pieceAtTarget = board.getPieceAt(targetPosition);
+
+            if (pieceAtTarget == null || pieceAtTarget.getColor() != this.color) {
+                validMoves.add(targetPosition);
+            }
+        }
+
+        return validMoves;
     }
 }

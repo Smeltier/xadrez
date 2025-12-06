@@ -28,7 +28,7 @@ public abstract class SlidingPiece extends Piece {
             if (pieceAtTarget == null) {
                 moves.add(targetPosition);
             } else {
-                if (pieceAtTarget.getColor() == this.color) {
+                if (pieceAtTarget.getColor() != this.color) {
                     moves.add(targetPosition);
                 }
                 break;
