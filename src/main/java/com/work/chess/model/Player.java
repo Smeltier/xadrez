@@ -1,19 +1,29 @@
 package main.java.com.work.chess.model;
 
+import main.java.com.work.chess.util.PieceColor;
+
 public class Player {
     private final String name;
-    private final Integer id;
+    private PieceColor color;
     
-    public Player (String name, Integer id) {
+    public Player (String name) {
         this.name = name;
-        this.id = id;
+    }
+
+    public Player (String name, PieceColor color) {
+        this.name = name;
+        this.color = color;
     }
 
     public String getName () {
         return this.name;
     }
 
-    public Integer getID () {
-        return this.id;
+    public PieceColor getColor () {
+        return this.color;
+    }
+
+    public void setColor(PieceColor color) {
+        this.color = color;
     }
 }
