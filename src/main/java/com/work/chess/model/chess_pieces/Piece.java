@@ -8,8 +8,8 @@ import main.java.com.work.chess.model.Board;
 
 public abstract class Piece {
     private final String symbol;
-    private final PieceColor color;
-    private Position position;
+    protected final PieceColor color;
+    protected Position position;
 
     public Piece (String symbol, PieceColor color, Position position) {
         this.symbol = symbol;
@@ -27,11 +27,15 @@ public abstract class Piece {
         return this.position;
     }
 
-    public void setPosition (Position newPosition) {
-        this.position = newPosition;
+    public PieceColor getColor() {
+        return color;
     }
-
+    
     public String getSymbol () {
         return this.symbol;
+    }
+
+    public void setPosition (Position newPosition) {
+        this.position = newPosition;
     }
 }
