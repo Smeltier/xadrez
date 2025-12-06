@@ -2,8 +2,8 @@ package main.java.com.work.chess;
 
 import main.java.com.work.chess.view.BoardPrinter;
 import main.java.com.work.chess.model.Board;
-import main.java.com.work.chess.model.Pawn;
 import main.java.com.work.chess.model.Position;
+import main.java.com.work.chess.model.chess_pieces.Pawn;
 import main.java.com.work.chess.util.ConsoleUtils;
 import main.java.com.work.chess.util.PieceColor;
 

@@ -2,6 +2,8 @@ package main.java.com.work.chess.model;
 
 import java.security.InvalidParameterException;
 
+import main.java.com.work.chess.model.chess_pieces.Piece;
+
 public class Board {
     private final int BOARDSIZE = 8;
     private Piece[][] board = new Piece[BOARDSIZE][BOARDSIZE];

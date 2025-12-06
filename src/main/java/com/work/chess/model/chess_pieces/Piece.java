@@ -1,7 +1,6 @@
 package main.java.com.work.chess.model.chess_pieces;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import main.java.com.work.chess.util.PieceColor;
 import main.java.com.work.chess.model.Position;

@@ -1,8 +1,8 @@
 package main.java.com.work.chess.view;
 
 import main.java.com.work.chess.model.Board;
-import main.java.com.work.chess.model.Piece;
 import main.java.com.work.chess.model.Position;
+import main.java.com.work.chess.model.chess_pieces.Piece;
 
 public class BoardPrinter {
     private BoardPrinter () {}
