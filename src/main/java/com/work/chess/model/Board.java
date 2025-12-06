@@ -19,7 +19,7 @@ public class Board {
         board[position.getRow()][position.getCol()] = piece;
     }
     
-    private boolean isOnLimits (Position position) {
+    public boolean isOnLimits (Position position) {
         int row = position.getRow();
         int col = position.getCol();
         return row >= 0 && row < this.BOARDSIZE && col >= 0 && row < this.BOARDSIZE;
