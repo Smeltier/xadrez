@@ -22,8 +22,8 @@ public class Board {
     }
     
     public boolean isOnLimits (Position position) {
-        int row = position.getRow();
-        int col = position.getCol();
+        int row = position.getRow() - 1;
+        int col = position.getCol() - 1;
         return row >= 0 && row < this.BOARDSIZE && col >= 0 && row < this.BOARDSIZE;
     }
 }
