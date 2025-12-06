@@ -3,8 +3,8 @@ package main.java.com.work.chess.model.chess_pieces;
 import java.util.ArrayList;
 
 import main.java.com.work.chess.model.Position;
+import main.java.com.work.chess.enums.PieceColor;
 import main.java.com.work.chess.model.Board;
-import main.java.com.work.chess.util.PieceColor;
 
 public class Pawn extends Piece {
     private boolean isFirstMove;

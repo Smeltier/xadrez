@@ -1,6 +1,6 @@
 package main.java.com.work.chess.model;
 
-import main.java.com.work.chess.util.PieceColor;
+import main.java.com.work.chess.enums.PieceColor;
 
 public class Player {
     private final String name;

@@ -26,4 +26,8 @@ public class Board {
         int col = position.getCol();
         return row >= 0 && row < this.BOARDSIZE && col >= 0 && row < this.BOARDSIZE;
     }
+
+    public int getBOARDSIZE() {
+        return BOARDSIZE;
+    }
 }

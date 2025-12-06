@@ -3,7 +3,7 @@ package main.java.com.work.chess.model.chess_pieces;
 import java.util.ArrayList;
 
 import main.java.com.work.chess.model.Position;
-import main.java.com.work.chess.util.PieceColor;
+import main.java.com.work.chess.enums.PieceColor;
 import main.java.com.work.chess.model.Board;
 
 public class Rook extends SlidingPiece {   
