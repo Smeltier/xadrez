@@ -22,7 +22,7 @@ public class PieceMover {
     }
 
     private static void validateMove (Piece piece, Board board, Position newPosition) {
-        if (!piece.getValidMoves(board).contains(newPosition)) {
+        if (!board.isOnLimits(newPosition) || !piece.getValidMoves(board).contains(newPosition)) {
             throw new IllegalArgumentException("[WARNING]: Movimento Inválido.");
         }
     }
