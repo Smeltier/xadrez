@@ -7,11 +7,6 @@ import main.java.com.work.chess.util.ConsoleUtils;
 import main.java.com.work.chess.enums.PieceColor;
 
 public class BoardPrinter {
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_WHITE = "\u001B[1;97m";
-    public static final String ANSI_YELLOW = "\u001B[1;33m";
-    public static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
-    public static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
 
     private BoardPrinter() {}
 
@@ -28,15 +23,15 @@ public class BoardPrinter {
                 String backgroundColor;
                 
                 if ((row + col) % 2 == 0) {
-                    backgroundColor = ANSI_PURPLE_BACKGROUND;
+                    backgroundColor = ConsoleUtils.ANSI_PURPLE_BACKGROUND;
                 } else {
-                    backgroundColor = ANSI_BLACK_BACKGROUND;
+                    backgroundColor = ConsoleUtils.ANSI_BLACK_BACKGROUND;
                 }
                 
                 printPiece(board.getPieceAt(new Position(row, col)), backgroundColor);
             }
             
-            System.out.println(ANSI_RESET + " " + row); 
+            System.out.println(ConsoleUtils.ANSI_RESET + " " + row); 
         }
         
         System.out.println("   a  b  c  d  e  f  g  h");
@@ -45,12 +40,12 @@ public class BoardPrinter {
 
     private static void printPiece(Piece piece, String background) {
         if (piece == null) {
-            System.out.print(background + "   " + ANSI_RESET);
+            System.out.print(background + "   " + ConsoleUtils.ANSI_RESET);
         } else {
             if (piece.getColor() == PieceColor.WHITE) {
-                System.out.print(background + ANSI_WHITE + " " + piece.getSymbol() + " " + ANSI_RESET);
+                System.out.print(background + ConsoleUtils.ANSI_WHITE + " " + piece.getSymbol() + " " + ConsoleUtils.ANSI_RESET);
             } else {
-                System.out.print(background + ANSI_YELLOW + " " + piece.getSymbol() + " " + ANSI_RESET);
+                System.out.print(background + ConsoleUtils.ANSI_CYAN + " " + piece.getSymbol() + " " + ConsoleUtils.ANSI_RESET);
             }
         }
     }
