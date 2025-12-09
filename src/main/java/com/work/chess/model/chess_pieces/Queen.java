@@ -3,9 +3,9 @@ package main.java.com.work.chess.model.chess_pieces;
 import java.util.ArrayList;
 
 import main.java.com.work.chess.model.Position;
-import main.java.com.work.chess.util.SymbolFactory;
 import main.java.com.work.chess.enums.PieceColor;
 import main.java.com.work.chess.enums.PieceType;
+import main.java.com.work.chess.factories.SymbolFactory;
 import main.java.com.work.chess.model.Board;
 
 public class Queen extends SlidingPiece {   
