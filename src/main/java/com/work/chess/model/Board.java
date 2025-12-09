@@ -14,9 +14,9 @@ public class Board {
         return board[position.getRow() - 1][position.getCol() - 1];
     }
 
-    public void setPieceAt (Position position, Piece piece) throws Exception {
+    public void setPieceAt (Position position, Piece piece) {
         if (!isOnLimits(position)) {
-            throw new InvalidParameterException("Posição fora dos limites do tabuleiro.");
+            throw new IllegalArgumentException("Posição fora dos limites do tabuleiro.");
         }
         board[position.getRow() - 1][position.getCol() - 1] = piece;
     }
@@ -27,7 +27,7 @@ public class Board {
         return row >= 0 && row < this.BOARDSIZE && col >= 0 && col < this.BOARDSIZE;
     }
 
-    public int getBOARDSIZE() {
+    public int getBOARDSIZE () {
         return BOARDSIZE;
     }
 }
