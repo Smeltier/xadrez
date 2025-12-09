@@ -5,6 +5,13 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 
 public class ConsoleUtils {
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_WHITE = "\u001B[1;97m";
+    public static final String ANSI_YELLOW = "\u001B[1;33m";
+    public static final String ANSI_CYAN = "\u001b[36m";
+    public static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
+    public static final String ANSI_BLACK_BACKGROUND = "\u001B[40m";
+
     private ConsoleUtils () {}
     
     public static void clearScreen () {
