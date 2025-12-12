@@ -1,55 +1,63 @@
 package main.java.com.work.chess.view;
 
+import main.java.com.work.chess.interfaces.IUserInterface;
+import main.java.com.work.chess.util.ConsoleUtils;
+
 public class MenuView {
+
+    private static IUserInterface ui;
     
     private MenuView () {}
 
+    public static void setUI (IUserInterface newUI) {
+        MenuView.ui = newUI;
+    }
+
     public static void startMenu () {
-        MenuView.title("BEM - VINDO AO JOGO DE XADREZ");
-        System.out.println("1 - Iniciar nova partida");
-        System.out.println("2 - Regras do jogo");
-        System.out.println("3 - Sair");
-        System.out.print("\nEscolha uma opção: ");
+        ConsoleUtils.clearScreen();
+        title("BEM - VINDO AO JOGO DE XADREZ");
+        ui.showMessage("1 - Iniciar nova partida");
+        ui.showMessage("2 - Regras do jogo");
+        ui.showMessage("3 - Sair");
     }
     
     public static void promotionMenu () {
-        MenuView.title("PROMOÇÃO DO PEÃO");
-        System.out.println("Escolha a peça para promover:");
-        System.out.println("1 - Dama (♕)");
-        System.out.println("2 - Torre (♖)");
-        System.out.println("3 - Cavalo (♘)");
-        System.out.println("4 - Bispo (♗)");
-        System.out.print("\nOpção: ");
+        ConsoleUtils.clearScreen();
+        title("PROMOÇÃO DO PEÃO");
+        ui.showMessage("Escolha a peça para promover:");
+        ui.showMessage("1 - Dama (♕)");
+        ui.showMessage("2 - Torre (♖)");
+        ui.showMessage("3 - Cavalo (♘)");
+        ui.showMessage("4 - Bispo (♗)");
     }
 
-    public static void showRules() {
-        MenuView.title("REGRAS E INSTRUÇÕES");
+    public static void showRules () {
+        ConsoleUtils.clearScreen();
+        title("REGRAS E INSTRUÇÕES");
         
-        System.out.println("OBJETIVO:");
-        System.out.println("  O objetivo é dar Xeque-mate no Rei adversário.");
-        System.out.println("  As peças Brancas sempre começam o jogo.\n");
+        ui.showMessage("OBJETIVO:");
+        ui.showMessage("  O objetivo é dar Xeque-mate no Rei adversário.");
+        ui.showMessage("  As peças Brancas sempre começam o jogo.\n");
 
-        System.out.println("MOVIMENTAÇÃO DAS PEÇAS:");
-        System.out.println("  ♟ PEÃO:   Move-se para frente (1 casa). No primeiro movimento, pode andar 2.");
-        System.out.println("            Captura apenas na diagonal. Promoção ao chegar ao fim.");
-        System.out.println("  ♜ TORRE:  Move-se em linhas retas (horizontal e vertical).");
-        System.out.println("  ♞ CAVALO: Move-se em 'L' (2 casas em uma direção + 1 perpendicular).");
-        System.out.println("            É a única peça que pode pular outras.");
-        System.out.println("  ♝ BISPO:  Move-se em diagonais livres.");
-        System.out.println("  ♛ DAMA:   Combina os movimentos da Torre e do Bispo.");
-        System.out.println("  ♚ REI:    Move-se 1 casa em qualquer direção.\n");
+        ui.showMessage("MOVIMENTAÇÃO DAS PEÇAS:");
+        ui.showMessage("  ♟ PEÃO:   Move-se para frente (1 casa). No primeiro movimento, pode andar 2.");
+        ui.showMessage("            Captura apenas na diagonal. Promoção ao chegar ao fim.");
+        ui.showMessage("  ♜ TORRE:  Move-se em linhas retas (horizontal e vertical).");
+        ui.showMessage("  ♞ CAVALO: Move-se em 'L' (2 casas em uma direção + 1 perpendicular).");
+        ui.showMessage("            É a única peça que pode pular outras.");
+        ui.showMessage("  ♝ BISPO:  Move-se em diagonais livres.");
+        ui.showMessage("  ♛ DAMA:   Combina os movimentos da Torre e do Bispo.");
+        ui.showMessage("  ♚ REI:    Move-se 1 casa em qualquer direção.\n");
 
-        System.out.println("COMO JOGAR:");
-        System.out.println("  Digite as coordenadas de ORIGEM e DESTINO.");
-        System.out.println("  Exemplo: 'e2 e4' (Move a peça de E2 para E4).");
-        System.out.println("  Exemplo: 'a1 h8' (Move a peça de A1 para H8).");
-        
-        System.out.println("\n[Pressione ENTER para voltar ao menu principal]");
+        ui.showMessage("COMO JOGAR:");
+        ui.showMessage("  Digite as coordenadas de ORIGEM e DESTINO.");
+        ui.showMessage("  Exemplo: 'e2 e4' (Move a peça de E2 para E4).");
+        ui.showMessage("  Exemplo: 'a1 h8' (Move a peça de A1 para H8).");
     }
 
     public static void title (String message) {
-        System.out.println("\n===========================================");
-        System.out.println("   " + message);
-        System.out.println("===========================================");
+        ui.showMessage("\n===========================================");
+        ui.showMessage("   " + message);
+        ui.showMessage("===========================================");
     }
 }
