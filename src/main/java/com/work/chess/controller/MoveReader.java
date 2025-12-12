@@ -1,15 +1,15 @@
 package main.java.com.work.chess.controller;
 
-import java.util.Scanner;
-
 import main.java.com.work.chess.model.Position;
 
 public class MoveReader {
 
-    private MoveReader() {}
+    private MoveReader () {}
 
-    public static Position[] read(Scanner sc) {
-        String input = sc.nextLine();
+    public static Position[] parse (String input) {
+        if (input == null || input.isEmpty()) {
+            throw new IllegalArgumentException("Entrada vazia.");
+        }
         
         String[] parts = input.trim().split("\\s+");
 
