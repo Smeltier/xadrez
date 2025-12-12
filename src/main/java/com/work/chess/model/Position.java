@@ -1,16 +1,24 @@
 package main.java.com.work.chess.model;
 
-import java.util.Objects; // Necessário para hashCode
+import java.util.Objects;
 
 public class Position {
-    private final int row;
-    private final int col;
+    private final Integer row;
+    private final Integer col;
 
-    public Position (int row, int col) {
+    public Position (Integer row, Integer col) {
         this.row = row;
         this.col = col;
     }
 
+    public int getCol () {
+        return col;
+    }
+    
+    public int getRow () {
+        return row;
+    }
+    
     @Override
     public boolean equals (Object obj) {
         if (this == obj) return true;
@@ -29,13 +37,5 @@ public class Position {
     public String toString () {
         char file = (char) ('A' + col - 1); 
         return "" + file + row;
-    }
-
-    public int getCol () {
-        return col;
-    }
-
-    public int getRow () {
-        return row;
     }
 }
