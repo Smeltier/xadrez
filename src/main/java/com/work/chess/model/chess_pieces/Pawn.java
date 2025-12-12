@@ -22,6 +22,8 @@ public class Pawn extends Piece {
         
         Position positionFront1 = new Position(position.getRow() + direction, position.getCol());
         Position positionFront2 = new Position(position.getRow() + (direction * 2), position.getCol());
+        
+        // Diagonais
         Position positionDiagonalLeft = new Position(position.getRow() + direction, position.getCol() - 1);
         Position positionDiagonalRight = new Position(position.getRow() + direction, position.getCol() + 1);
 
@@ -47,6 +49,16 @@ public class Pawn extends Piece {
 
             if (pieceAtTarget != null && pieceAtTarget.getColor() != this.color) {
                 moves.add(targetPosition);
+            }
+            
+            else if (board.getEnPassantVulnerable() != null) {
+                Position epTarget = board.getEnPassantVulnerable();
+                
+                if (targetPosition.getRow() == epTarget.getRow() && 
+                    targetPosition.getCol() == epTarget.getCol()) {
+                    
+                    moves.add(targetPosition);
+                }
             }
         }
     }
