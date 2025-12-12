@@ -1,12 +1,12 @@
 package main.java.com.work.chess.model;
 
-import java.security.InvalidParameterException;
-
+import main.java.com.work.chess.exceptions.InvalidPositionException;
 import main.java.com.work.chess.model.chess_pieces.Piece;
 
 public class Board {
-    private final int BOARDSIZE = 8;
+    private final Integer BOARDSIZE = 8;
     private Piece[][] board = new Piece[BOARDSIZE][BOARDSIZE];
+    private Position enPassantVulnerable;
 
     public Board () {}
 
@@ -16,7 +16,7 @@ public class Board {
 
     public void setPieceAt (Position position, Piece piece) {
         if (!isOnLimits(position)) {
-            throw new IllegalArgumentException("Posição fora dos limites do tabuleiro.");
+            throw new InvalidPositionException("Posição fora dos limites do tabuleiro.");
         }
         board[position.getRow() - 1][position.getCol() - 1] = piece;
     }
@@ -27,7 +27,15 @@ public class Board {
         return row >= 0 && row < this.BOARDSIZE && col >= 0 && col < this.BOARDSIZE;
     }
 
-    public int getBOARDSIZE () {
+    public Integer getBOARDSIZE () {
         return BOARDSIZE;
+    }
+
+    public Position getEnPassantVulnerable() {
+        return enPassantVulnerable;
+    }
+
+    public void setEnPassantVulnerable(Position enPassantVulnerable) {
+        this.enPassantVulnerable = enPassantVulnerable;
     }
 }
