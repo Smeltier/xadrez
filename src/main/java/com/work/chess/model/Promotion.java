@@ -5,17 +5,17 @@ import java.util.Scanner;
 import main.java.com.work.chess.enums.PieceColor;
 import main.java.com.work.chess.enums.PieceType;
 import main.java.com.work.chess.factories.PromotionFactory;
-import main.java.com.work.chess.interfaces.ISpecialMoves;
+import main.java.com.work.chess.interfaces.ISpecialMove;
 import main.java.com.work.chess.model.chess_pieces.Pawn;
 import main.java.com.work.chess.model.chess_pieces.Piece;
 import main.java.com.work.chess.view.MenuView;
 
-public class Promotion implements ISpecialMoves {
+public class Promotion implements ISpecialMove {
 
     @Override
     public boolean canExecute(Board board, Move move) {
-        Piece piece = move.piece;
-        Position to = move.to;
+        Piece piece = move.getPiece();
+        Position to = move.getDestiny();
 
         if (!(piece instanceof Pawn)) {
             return false;
@@ -50,12 +50,12 @@ public class Promotion implements ISpecialMoves {
             default -> PieceType.QUEEN;
         };
 
-        Piece newPiece = PromotionFactory.create(type, move.piece);
+        Piece newPiece = PromotionFactory.create(type, move.getPiece());
 
         try {
             if (newPiece != null) {
-                newPiece.setPosition(move.to);
-                board.setPieceAt(move.to, newPiece);
+                newPiece.setPosition(move.getDestiny());
+                board.setPieceAt(move.getDestiny(), newPiece);
             }
         } catch (Exception e) {
             System.out.println("Erro na Promoção: " + e.getMessage());
