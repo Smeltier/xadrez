@@ -1,0 +1,308 @@
+@startuml class_diagram
+
+skinparam linetype ortho
+left to right direction
+skinparam classArrowColor black
+skinparam nodesep 100
+skinparam ranksep 100
+
+skinparam ClassDiagram {
+    ArrowThickness 1
+    ArrowColor black
+    HorizontalSpacing 60
+    VerticalSpacing 60
+    ArrowFontSize 11
+    ArrowFontColor black
+    ArrowFontStyle plain
+}
+
+class Board {
+  - BOARDSIZE : Integer = 8
+  + Board()
+  + getPieceAt(position : Position) : Piece
+  + setPieceAt(position : Position, piece : Piece) : void
+  + isOnLimits(position : Position) : boolean
+  + getBoardsize() : Integer
+}
+
+class Position {
+  - row : Integer
+  - col : Integer
+  + Position(row : Integer, col : Integer)
+  + getCol() : Integer
+  + getRow() : Integer
+}
+
+class Move {
+  + Move(piece : Piece, from : Position, to : Position, capturedPiece : Piece)
+  + getCapturedPiece() : Piece
+  + getPiece() : Piece
+  + getOrigin() : Position
+  + getDestiny() : Position
+}
+
+abstract class Piece {
+  - symbol : String
+  # moveCount : Integer
+  + Piece(symbol : String, color : PieceColor, position : Position)
+  + getValidMoves(board : Board) : ArrayList<Position>
+  + isFirstMove() : boolean
+  + getPosition() : Position
+  + getColor() : PieceColor
+  + setPosition(newPosition : Position) : void
+}
+
+abstract class SlidingPiece extends Piece {
+  + SlidingPiece(symbol : String, color : PieceColor, position : Position)
+  # checkMoveTrajectory(moves : ArrayList<Position>, board : Board, deltaRow : int, deltaCol : int) : void
+}
+
+class Bishop extends SlidingPiece {
+  + Bishop(color : PieceColor, position : Position)
+  + getValidMoves(board : Board) : ArrayList<Position>
+}
+
+class Rook extends SlidingPiece {
+  + Rook(color : PieceColor, position : Position)
+  + getValidMoves(board : Board) : ArrayList<Position>
+}
+
+class Queen extends SlidingPiece {
+  + Queen(color : PieceColor, position : Position)
+  + getValidMoves(board : Board) : ArrayList<Position>
+}
+
+class Pawn extends Piece {
+  + Pawn(color : PieceColor, position : Position)
+  + getValidMoves(board : Board) : ArrayList<Position>
+  - checkCaptureMove(moves : ArrayList<Position>, board : Board, targetPosition : Position) : void
+}
+
+class Knight extends Piece {
+  + Knight(color : PieceColor, position : Position)
+  + getValidMoves(board : Board) : ArrayList<Position>
+}
+
+class King extends Piece {
+  + King(color : PieceColor, position : Position)
+  + getValidMoves(board : Board) : ArrayList<Position>
+}
+
+enum PieceColor {
+  WHITE
+  BLACK
+}
+
+enum PieceType {
+  QUEEN
+  KNIGHT
+  ROOK
+  BISHOP
+  PAWN
+  KING
+}
+
+class PromotionFactory {
+  - PromotionFactory()
+  + create(type : PieceType, original : Piece) : Piece
+}
+
+class StandardBoardFactory {
+  + createBoard() : Board
+  - setupSide(board : Board, color : PieceColor) : void
+}
+
+class SymbolFactory {
+  - SYMBOLS : Map<String, String>
+  - SymbolFactory()
+  + getSymbol(type : PieceType, color : PieceColor) : String
+}
+
+class InvalidPositionException extends IllegalArgumentException {
+  + InvalidPositionException(message : String)
+}
+
+interface IUserInterface {
+  + showBoard(board : Board) : void
+  + showMessage(message : String) : void
+  + showError(error : String) : void
+  + readInput(prompt : String) : String
+  + readMove() : Position[]
+  + close() : void
+}
+
+class ConsoleUI implements IUserInterface {
+  + ConsoleUI()
+  + showBoard(board : Board) : void
+  + showMessage(message : String) : void
+  + showError(error : String) : void
+  + readInput(prompt : String) : String
+  + readMove() : Position[]
+  + close() : void
+}
+
+interface ISpecialMove {
+  + canExecute(board : Board, move : Move) : boolean
+  + execute(board : Board, move : Move, ui : IUserInterface) : void
+}
+
+class EnPassant implements ISpecialMove {
+  + canExecute(board : Board, move : Move) : boolean
+  + execute(board : Board, move : Move, ui : IUserInterface) : void
+}
+
+class Castling implements ISpecialMove {
+  + canExecute(board : Board, move : Move) : boolean
+  + execute(board : Board, move : Move, ui : IUserInterface) : void
+}
+
+class Promotion implements ISpecialMove {
+  + canExecute(board : Board, move : Move) : boolean
+  + execute(board : Board, move : Move, ui : IUserInterface) : void
+}
+
+class ChessRules {
+  - ChessRules()
+  + isMoveLegal(board : Board, move: Move) : boolean
+  + isKingInCheck(board : Board, kingColor : PieceColor) : boolean
+  + isCheckMate(board : Board, kingColor : PieceColor) : boolean
+  - undoMove(board : Board, move: Move) : void
+  - findKingPosition(board : Board, color : PieceColor) : Position
+  - getPiecesByColor(board : Board, color : PieceColor) : List<Piece>
+}
+
+class Game {
+  - isRunning : boolean
+  + Game(ui : IUserInterface)
+  + run() : void
+  - processTurn() : void
+  - validateSourcePosition(from : Position) : void
+  - setupPlayers() : void
+  - switchTurn() : void
+}
+
+class MoveReader {
+  - MoveReader()
+  + {static} parse(input : String) : Position[]
+  - {static} convertStringToPosition(s : String) : Position
+}
+
+class PieceMover {
+  - PieceMover()
+  + {static} move(board : Board, move : Move, specials : List<ISpecialMove>, ui : IUserInterface) : void
+  - {static} applyMove(board : Board, move : Move) : void
+}
+
+class Player {
+    - name : String
+    + Player(name : String, color : PieceColor)
+    + getName() : String
+    + getColor() : PieceColor
+    + equals(obj : Object) : boolean
+    + hashCode() : int
+    + toString() : String
+}
+
+class ChessApp {
+  + start() : void
+}
+
+class SpecialMovesRegistry {
+    {static} + getAll() : List<ISpecialMove>
+}
+
+class ConsoleUtils <<utility>> {
+    {static} + ANSI_RESET : String
+    {static} + ANSI_WHITE : String
+    {static} + ANSI_YELLOW : String
+    {static} + ANSI_CYAN : String
+    {static} + ANSI_PURPLE_BACKGROUND : String
+    {static} + ANSI_BLACK_BACKGROUND : String
+    - ConsoleUtils()
+    {static} + clearScreen() : void
+    {static} + defineUTF8() : void
+}
+
+class BoardPrinter <<utility>> {
+    - BoardPrinter()
+    {static} + print(board : Board) : void
+    {static} - printPiece(piece : Piece, background : String) : void
+}
+
+class MenuView <<utility>> {
+    - MenuView()
+    {static} + startMenu(ui : IUserInterface) : void
+    {static} + promotionMenu(ui : IUserInterface) : void
+    {static} + showRules(ui : IUserInterface) : void
+    {static} + title(ui : IUserInterface, message : String) : void
+}
+
+class Scanner {
+}
+
+Game --> Board : board
+Game --> Player : whitePlayer
+Game --> Player : blackPlayer
+Game --> PieceColor : currentPlayerColor
+Game --> IUserInterface : ui
+
+ConsoleUI --> Scanner : sc
+
+Player --> PieceColor : color
+
+Piece --> PieceColor : color
+Piece --> Position : position
+
+Move --> Piece : piece
+Move --> Piece : capturedPiece
+Move --> Position : from
+Move --> Position : to
+
+Board o--> Piece : board
+
+SpecialMovesRegistry o--> ISpecialMove : specialMoves
+
+PieceMover ..> ISpecialMove : specials
+PieceMover ..> IUserInterface
+PieceMover ..> Board
+PieceMover ..> Move
+
+ChessApp ..> Game
+ChessApp ..> MenuView
+ChessApp ..> ConsoleUI
+ChessApp ..> IUserInterface
+
+MenuView ..> IUserInterface
+MenuView ..> ConsoleUtils 
+
+Promotion ..> IUserInterface
+Promotion ..> PromotionFactory
+Promotion ..> MenuView
+Castling ..> IUserInterface
+EnPassant ..> IUserInterface
+
+ConsoleUI ..> MoveReader
+ConsoleUI ..> BoardPrinter
+
+MoveReader ..> Position
+
+BoardPrinter ..> Board
+BoardPrinter ..> ConsoleUtils
+Board ..> InvalidPositionException
+
+StandardBoardFactory ..> Board
+StandardBoardFactory ..> PieceColor
+
+PromotionFactory ..> Piece
+PromotionFactory ..> PieceType
+
+SymbolFactory ..> PieceType
+SymbolFactory ..> PieceColor
+
+ChessRules ..> Board
+ChessRules ..> Piece
+ChessRules ..> Move
+ChessRules ..> Position
+ChessRules ..> PieceColor
+
+@enduml
