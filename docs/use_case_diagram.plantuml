@@ -1,0 +1,45 @@
+@startuml use_case_diagram
+
+left to right direction
+actor "Jogador" as Player
+
+rectangle "Sistema de Xadrez" {
+    
+    usecase "Iniciar Aplicação" as UC1
+    usecase "Configurar Jogadores" as UC2
+    usecase "Visualizar Regras" as UC3
+    usecase "Sair do Jogo" as UC4
+    
+    usecase "Jogar Partida" as UC5
+    usecase "Fazer Movimento" as UC6
+    usecase "Visualizar Tabuleiro" as UC7
+    
+    usecase "Movimento Especial: Roque" as UC_Castling
+    usecase "Movimento Especial: En Passant" as UC_EnPassant
+    usecase "Movimento Especial: Promoção" as UC_Promotion
+    
+    usecase "Xeque / Xeque-Mate" as UC_Check
+
+    Player --> UC1
+    UC1 --> UC2 : include
+    UC1 --> UC3
+    UC1 --> UC4
+    
+    UC1 --> UC5
+    UC5 --> UC6
+    UC5 --> UC7
+    
+    UC6 <.. UC_Check : include
+    
+    UC6 <.. UC_Castling : extend
+    UC6 <.. UC_EnPassant : extend
+    UC6 <.. UC_Promotion : extend
+    
+    note right of UC_Promotion
+      Ocorre quando o Peão
+      chega na última linha.
+      Exige input do usuário.
+    end note
+}
+
+@enduml
