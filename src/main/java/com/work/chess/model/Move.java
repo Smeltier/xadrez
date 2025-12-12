@@ -5,16 +5,32 @@ import java.util.Objects;
 import main.java.com.work.chess.model.chess_pieces.Piece;
 
 public class Move {
-    public final Piece piece;
-    public final Piece capturedPiece;
-    public final Position from;
-    public final Position to;
+    private final Piece piece;
+    private final Piece capturedPiece;
+    private final Position from;
+    private final Position to;
 
     public Move(Piece piece, Position from, Position to, Piece capturedPiece) {
         this.piece = piece;
         this.from = from;
         this.to = to;
         this.capturedPiece = capturedPiece;
+    }
+
+    public Piece getCapturedPiece() {
+        return capturedPiece;
+    }
+
+    public Position getOrigin() {
+        return from;
+    }
+
+    public Piece getPiece() {
+        return piece;
+    }
+
+    public Position getDestiny() {
+        return to;
     }
 
     @Override
