@@ -1,45 +1,47 @@
 package main.java.com.work.chess.model;
 
-import main.java.com.work.chess.enums.PieceColor;
-import main.java.com.work.chess.interfaces.ISpecialMoves;
+import main.java.com.work.chess.interfaces.ISpecialMove;
 import main.java.com.work.chess.model.chess_pieces.Pawn;
-import main.java.com.work.chess.model.chess_pieces.Piece;
 
-public class EnPassant implements ISpecialMoves {
+public class EnPassant implements ISpecialMove {
 
     @Override
-    public boolean canExecute (Board board, Move move) {
-        if (!(move.piece instanceof Pawn)) {
+    public boolean canExecute(Board board, Move move) {
+        if (!(move.getPiece() instanceof Pawn)) {
             return false;
         }
+
+        if (board.getEnPassantVulnerable() == null) {
+            return false;
+        }
+
+        Position target = board.getEnPassantVulnerable();
         
-        if (move.from.getCol () == move.to.getCol ()) {
+        boolean isGoingToTarget = move.getDestiny().getRow() == target.getRow() && 
+                                  move.getDestiny().getCol() == target.getCol();
+
+        if (!isGoingToTarget) {
             return false;
         }
 
-        if (move.capturedPiece != null) {
+        if (move.getOrigin().getCol() == move.getDestiny().getCol()) {
             return false;
         }
 
-        int enemyPawnRow = move.from.getRow ();
-        int enemyPawnCol = move.to.getCol ();
-        Position enemyPosition = new Position (enemyPawnRow, enemyPawnCol);
-        
-        Piece enemyPiece = board.getPieceAt (enemyPosition);
-
-        return enemyPiece instanceof Pawn && enemyPiece.getColor () != move.piece.getColor ();
+        return true;
     }
 
     @Override
-    public void execute (Board board, Move move) {
-        int directionBack = (move.piece.getColor () == PieceColor.WHITE) ? -1 : 1;
+    public void execute(Board board, Move move) {
+        int enemyRow = move.getOrigin().getRow();
+        int enemyCol = move.getDestiny().getCol();
         
-        Position enemyPawnPos = new Position (move.to.getRow () + directionBack, move.to.getCol ());
+        Position enemyPawnPos = new Position(enemyRow, enemyCol);
         
         try {
-            board.setPieceAt (enemyPawnPos, null);
+            board.setPieceAt(enemyPawnPos, null);
         } catch (Exception e) {
-            System.out.println (e.getMessage ());
+            System.out.println("Erro ao executar En Passant: " + e.getMessage());
         }
     }
 }
