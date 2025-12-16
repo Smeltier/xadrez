@@ -8,7 +8,7 @@ import main.java.com.work.chess.view.MenuView;
 public class ChessApp {
 
     public void start () {
-        IUserInterface ui = new ConsoleUI();
+        IUserInterface ui = new ConsoleUI(); 
         boolean inMenu = true;
 
         MenuView.setUI(ui);
