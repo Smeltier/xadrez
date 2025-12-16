@@ -1,25 +1,25 @@
 package main.java.com.work.chess.model;
 
-import main.java.com.work.chess.interfaces.ISpecialMoves;
+import main.java.com.work.chess.interfaces.ISpecialMove;
 import main.java.com.work.chess.model.chess_pieces.King;
 import main.java.com.work.chess.model.chess_pieces.Piece;
 import main.java.com.work.chess.model.chess_pieces.Rook;
 
-public class Castling implements ISpecialMoves {
+public class Castling implements ISpecialMove {
 
     @Override
     public boolean canExecute (Board board, Move move) {
-        if (!(move.piece instanceof King)) {
+        if (!(move.getPiece() instanceof King)) {
             return false;
         }
 
-        int deltaCol = Math.abs (move.from.getCol () - move.to.getCol ());
+        int deltaCol = Math.abs(move.getOrigin().getCol () - move.getDestiny().getCol ());
         if (deltaCol != 2) return false;
 
-        if (!move.piece.isFirstMove ()) return false;
+        if (!move.getPiece().isFirstMove ()) return false;
 
-        int row = move.from.getRow ();
-        boolean isKingside = move.to.getCol () > move.from.getCol ();
+        int row = move.getOrigin().getRow ();
+        boolean isKingside = move.getDestiny().getCol () > move.getOrigin().getCol ();
         int rookCol = isKingside ? 8 : 1;
         
         Piece rook = board.getPieceAt (new Position (row, rookCol));
@@ -28,8 +28,8 @@ public class Castling implements ISpecialMoves {
             return false;
         }
 
-        int startCol = Math.min (move.from.getCol (), rookCol) + 1;
-        int endCol = Math.max (move.from.getCol (), rookCol) - 1;
+        int startCol = Math.min (move.getOrigin().getCol (), rookCol) + 1;
+        int endCol = Math.max (move.getOrigin().getCol (), rookCol) - 1;
 
         for (int col = startCol; col <= endCol; col++) {
             if (board.getPieceAt (new Position (row, col)) != null) {
@@ -42,8 +42,8 @@ public class Castling implements ISpecialMoves {
 
     @Override
     public void execute (Board board, Move move) {
-        int row = move.to.getRow ();
-        boolean isKingside = move.to.getCol () > move.from.getCol ();
+        int row = move.getDestiny().getRow ();
+        boolean isKingside = move.getDestiny().getCol () > move.getOrigin().getCol ();
 
         Position rookOriginPos;
         Position rookTargetPos;

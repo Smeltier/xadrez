@@ -4,34 +4,33 @@ import java.util.Scanner;
 
 import main.java.com.work.chess.enums.PieceColor;
 import main.java.com.work.chess.model.Board;
-import main.java.com.work.chess.model.Position;
+import main.java.com.work.chess.model.Move;
 import main.java.com.work.chess.model.chess_pieces.Piece;
 import main.java.com.work.chess.model.chess_pieces.Pawn;
 import main.java.com.work.chess.enums.PieceType;
-import main.java.com.work.chess.interfaces.ISpecialMoves;
+import main.java.com.work.chess.interfaces.ISpecialMove;
 
-public class Promotion implements ISpecialMoves {
+public class Promotion implements ISpecialMove {
 
-    public boolean canExecute (Board board, Piece piece, Position position) {
-        if (!(piece instanceof Pawn)) {
+    public boolean canExecute (Board board, Move move) {
+        if (!(move.getPiece() instanceof Pawn)) {
             return false;
         }
 
-        int row = position.getRow();
+        int row = move.getOrigin().getRow();
         
-        if (piece.getColor() == PieceColor.WHITE && row == board.getBOARDSIZE()) {
+        if (move.getPiece().getColor() == PieceColor.WHITE && row == board.getBOARDSIZE()) {
             return true;
         }
 
-        if (piece.getColor() == PieceColor.BLACK && row == 1) {
+        if (move.getPiece().getColor() == PieceColor.BLACK && row == 1) {
             return true;
         }
 
         return false;
     }
 
-    // Rainha, Cavalo, Torre e Bispo
-    public void execute (Board board, Piece piece, Position position) {
+    public void execute (Board board, Move move) {
         // Menu.printPromotionMessage();
         Scanner scan = new Scanner(System.in);
         int option = scan.nextInt();
@@ -44,10 +43,10 @@ public class Promotion implements ISpecialMoves {
             default -> PieceType.QUEEN;
         };
 
-        Piece newPiece = PromotionFactory.create(type, piece);
+        Piece newPiece = PromotionFactory.create(type, move.getPiece());
 
         try {
-            board.setPieceAt(piece.getPosition(), newPiece);
+            board.setPieceAt(move.getPiece().getPosition(), newPiece);
         } catch (Exception e) {}
     }
 }
