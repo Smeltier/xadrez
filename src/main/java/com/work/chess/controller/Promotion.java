@@ -9,6 +9,7 @@ import main.java.com.work.chess.model.chess_pieces.Piece;
 import main.java.com.work.chess.model.chess_pieces.Pawn;
 import main.java.com.work.chess.enums.PieceType;
 import main.java.com.work.chess.interfaces.ISpecialMove;
+import main.java.com.work.chess.factories.PromotionFactory;
 
 public class Promotion implements ISpecialMove {
 

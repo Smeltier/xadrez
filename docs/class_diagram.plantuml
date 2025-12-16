@@ -3,8 +3,8 @@
 skinparam linetype ortho
 left to right direction
 skinparam classArrowColor black
-skinparam nodesep 100
-skinparam ranksep 100
+skinparam nodesep 80
+skinparam ranksep 80
 
 skinparam ClassDiagram {
     ArrowThickness 1
@@ -18,11 +18,15 @@ skinparam ClassDiagram {
 
 class Board {
   - BOARDSIZE : Integer = 8
+  - board : Piece[][]
+  - enPassantVulnerable : Position
   + Board()
   + getPieceAt(position : Position) : Piece
   + setPieceAt(position : Position, piece : Piece) : void
   + isOnLimits(position : Position) : boolean
-  + getBoardsize() : Integer
+  + getBOARDSIZE() : Integer
+  + getEnPassantVulnerable() : Position
+  + setEnPassantVulnerable(position : Position) : void
 }
 
 class Position {
@@ -31,25 +35,39 @@ class Position {
   + Position(row : Integer, col : Integer)
   + getCol() : Integer
   + getRow() : Integer
+  + equals(obj : Object) : boolean
+  + hashCode() : int
+  + toString() : String
 }
 
 class Move {
+  - piece : Piece
+  - capturedPiece : Piece
+  - from : Position
+  - to : Position
   + Move(piece : Piece, from : Position, to : Position, capturedPiece : Piece)
   + getCapturedPiece() : Piece
   + getPiece() : Piece
   + getOrigin() : Position
   + getDestiny() : Position
+  + equals(obj : Object) : boolean
+  + hashCode() : int
+  + toString() : String
 }
 
 abstract class Piece {
   - symbol : String
   # moveCount : Integer
+  # color : PieceColor
+  # position : Position
   + Piece(symbol : String, color : PieceColor, position : Position)
-  + getValidMoves(board : Board) : ArrayList<Position>
+  + {abstract} getValidMoves(board : Board) : ArrayList<Position>
   + isFirstMove() : boolean
+  + decreaseMoveCount() : void
   + getPosition() : Position
-  + getColor() : PieceColor
   + setPosition(newPosition : Position) : void
+  + getColor() : PieceColor
+  + getSymbol() : String
 }
 
 abstract class SlidingPiece extends Piece {
@@ -104,22 +122,96 @@ enum PieceType {
 
 class PromotionFactory {
   - PromotionFactory()
-  + create(type : PieceType, original : Piece) : Piece
+  + {static} create(type : PieceType, original : Piece) : Piece
 }
 
 class StandardBoardFactory {
-  + createBoard() : Board
-  - setupSide(board : Board, color : PieceColor) : void
+  + {static} createBoard() : Board
+  - {static} setupSide(board : Board, color : PieceColor) : void
 }
 
 class SymbolFactory {
-  - SYMBOLS : Map<String, String>
+  - {static} SYMBOLS : Map<String, String>
   - SymbolFactory()
-  + getSymbol(type : PieceType, color : PieceColor) : String
+  + {static} getSymbol(type : PieceType, color : PieceColor) : String
 }
 
-class InvalidPositionException extends IllegalArgumentException {
+exception IllegalArgumentException
+
+exception InvalidPositionException extends IllegalArgumentException {
   + InvalidPositionException(message : String)
+}
+
+interface ISpecialMove {
+  + canExecute(board : Board, move : Move) : boolean
+  + execute(board : Board, move : Move) : void
+}
+
+class EnPassant implements ISpecialMove {
+  + canExecute(board : Board, move : Move) : boolean
+  + execute(board : Board, move : Move) : void
+}
+
+class Castling implements ISpecialMove {
+  + canExecute(board : Board, move : Move) : boolean
+  + execute(board : Board, move : Move) : void
+}
+
+class Promotion implements ISpecialMove {
+  + canExecute(board : Board, move : Move) : boolean
+  + execute(board : Board, move : Move) : void
+}
+
+class SpecialMovesRegistry {
+    - {static} specialMoves : ArrayList<ISpecialMove>
+    + {static} getAll() : List<ISpecialMove>
+}
+
+class ChessRules {
+  - ChessRules()
+  + {static} isMoveLegal(board : Board, move: Move) : boolean
+  + {static} isKingInCheck(board : Board, kingColor : PieceColor) : boolean
+  + {static} isCheckMate(board : Board, kingColor : PieceColor) : boolean
+  + {static} isStalemate(board : Board, color : PieceColor) : boolean
+  + {static} isSquareAttacked(board : Board, target : Position, victimColor : PieceColor) : boolean
+  - {static} undoMove(board : Board, move: Move) : void
+  - {static} findKingPosition(board : Board, color : PieceColor) : Position
+  - {static} getPiecesByColor(board : Board, color : PieceColor) : List<Piece>
+}
+
+class PieceMover {
+  - PieceMover()
+  + {static} move(board : Board, move : Move, specials : List<ISpecialMove>) : void
+  - {static} applyMove(board : Board, move : Move) : void
+}
+
+class MoveReader {
+  - MoveReader()
+  + {static} parse(input : String) : Position[]
+  - {static} convertStringToPosition(s : String) : Position
+}
+
+class Player {
+    - name : String
+    - color : PieceColor
+    + Player(name : String, color : PieceColor)
+    + getName() : String
+    + getColor() : PieceColor
+}
+
+class Game {
+  - board : Board
+  - ui : IUserInterface
+  - isRunning : boolean
+  - currentPlayerColor : PieceColor
+  - whitePlayer : Player
+  - blackPlayer : Player
+  + Game(ui : IUserInterface)
+  + run() : void
+  - processTurn() : void
+  - validateSourcePosition(from : Position) : void
+  - setupPlayers() : void
+  - switchTurn() : void
 }
 
 interface IUserInterface {
@@ -132,6 +224,7 @@ interface IUserInterface {
 }
 
 class ConsoleUI implements IUserInterface {
+  - sc : Scanner
   + ConsoleUI()
   + showBoard(board : Board) : void
   + showMessage(message : String) : void
@@ -141,168 +234,78 @@ class ConsoleUI implements IUserInterface {
   + close() : void
 }
 
-interface ISpecialMove {
-  + canExecute(board : Board, move : Move) : boolean
-  + execute(board : Board, move : Move, ui : IUserInterface) : void
+class ConsoleUtils <<utility>> {
+    + {static} ANSI_RESET : String
+    + {static} ANSI_WHITE : String
+    - ConsoleUtils()
+    + {static} clearScreen() : void
+    + {static} defineUTF8() : void
 }
 
-class EnPassant implements ISpecialMove {
-  + canExecute(board : Board, move : Move) : boolean
-  + execute(board : Board, move : Move, ui : IUserInterface) : void
+class BoardPrinter <<utility>> {
+    - BoardPrinter()
+    + {static} print(board : Board) : void
+    - {static} printPiece(piece : Piece, background : String) : void
 }
 
-class Castling implements ISpecialMove {
-  + canExecute(board : Board, move : Move) : boolean
-  + execute(board : Board, move : Move, ui : IUserInterface) : void
-}
-
-class Promotion implements ISpecialMove {
-  + canExecute(board : Board, move : Move) : boolean
-  + execute(board : Board, move : Move, ui : IUserInterface) : void
-}
-
-class ChessRules {
-  - ChessRules()
-  + isMoveLegal(board : Board, move: Move) : boolean
-  + isKingInCheck(board : Board, kingColor : PieceColor) : boolean
-  + isCheckMate(board : Board, kingColor : PieceColor) : boolean
-  - undoMove(board : Board, move: Move) : void
-  - findKingPosition(board : Board, color : PieceColor) : Position
-  - getPiecesByColor(board : Board, color : PieceColor) : List<Piece>
-}
-
-class Game {
-  - isRunning : boolean
-  + Game(ui : IUserInterface)
-  + run() : void
-  - processTurn() : void
-  - validateSourcePosition(from : Position) : void
-  - setupPlayers() : void
-  - switchTurn() : void
-}
-
-class MoveReader {
-  - MoveReader()
-  + {static} parse(input : String) : Position[]
-  - {static} convertStringToPosition(s : String) : Position
-}
-
-class PieceMover {
-  - PieceMover()
-  + {static} move(board : Board, move : Move, specials : List<ISpecialMove>, ui : IUserInterface) : void
-  - {static} applyMove(board : Board, move : Move) : void
-}
-
-class Player {
-    - name : String
-    + Player(name : String, color : PieceColor)
-    + getName() : String
-    + getColor() : PieceColor
-    + equals(obj : Object) : boolean
-    + hashCode() : int
-    + toString() : String
+class MenuView <<utility>> {
+    - ui : IUserInterface
+    - MenuView()
+    + {static} setUI(ui : IUserInterface) : void
+    + {static} startMenu() : void
+    + {static} promotionMenu() : void
+    + {static} showRules() : void
+    + {static} title(message : String) : void
 }
 
 class ChessApp {
   + start() : void
 }
 
-class SpecialMovesRegistry {
-    {static} + getAll() : List<ISpecialMove>
+class Main {
+  + {static} main(args : String[]) : void
 }
 
-class ConsoleUtils <<utility>> {
-    {static} + ANSI_RESET : String
-    {static} + ANSI_WHITE : String
-    {static} + ANSI_YELLOW : String
-    {static} + ANSI_CYAN : String
-    {static} + ANSI_PURPLE_BACKGROUND : String
-    {static} + ANSI_BLACK_BACKGROUND : String
-    - ConsoleUtils()
-    {static} + clearScreen() : void
-    {static} + defineUTF8() : void
-}
-
-class BoardPrinter <<utility>> {
-    - BoardPrinter()
-    {static} + print(board : Board) : void
-    {static} - printPiece(piece : Piece, background : String) : void
-}
-
-class MenuView <<utility>> {
-    - MenuView()
-    {static} + startMenu(ui : IUserInterface) : void
-    {static} + promotionMenu(ui : IUserInterface) : void
-    {static} + showRules(ui : IUserInterface) : void
-    {static} + title(ui : IUserInterface, message : String) : void
-}
-
-class Scanner {
-}
-
-Game --> Board : board
-Game --> Player : whitePlayer
-Game --> Player : blackPlayer
-Game --> PieceColor : currentPlayerColor
-Game --> IUserInterface : ui
-
-ConsoleUI --> Scanner : sc
-
-Player --> PieceColor : color
-
-Piece --> PieceColor : color
-Piece --> Position : position
-
-Move --> Piece : piece
-Move --> Piece : capturedPiece
-Move --> Position : from
-Move --> Position : to
-
-Board o--> Piece : board
-
-SpecialMovesRegistry o--> ISpecialMove : specialMoves
-
-PieceMover ..> ISpecialMove : specials
-PieceMover ..> IUserInterface
-PieceMover ..> Board
-PieceMover ..> Move
-
+Main ..> ChessApp
 ChessApp ..> Game
 ChessApp ..> MenuView
 ChessApp ..> ConsoleUI
-ChessApp ..> IUserInterface
 
-MenuView ..> IUserInterface
-MenuView ..> ConsoleUtils 
+Game o--> Board : board
+Game o--> Player : whitePlayer, blackPlayer
+Game --> IUserInterface
+Game ..> ChessRules
+Game ..> PieceMover
+Game ..> SpecialMovesRegistry
 
-Promotion ..> IUserInterface
-Promotion ..> PromotionFactory
-Promotion ..> MenuView
-Castling ..> IUserInterface
-EnPassant ..> IUserInterface
-
-ConsoleUI ..> MoveReader
-ConsoleUI ..> BoardPrinter
-
-MoveReader ..> Position
-
-BoardPrinter ..> Board
-BoardPrinter ..> ConsoleUtils
-Board ..> InvalidPositionException
-
-StandardBoardFactory ..> Board
-StandardBoardFactory ..> PieceColor
-
-PromotionFactory ..> Piece
-PromotionFactory ..> PieceType
-
-SymbolFactory ..> PieceType
-SymbolFactory ..> PieceColor
+PieceMover ..> ISpecialMove
+PieceMover ..> Board
+PieceMover ..> Move
 
 ChessRules ..> Board
 ChessRules ..> Piece
 ChessRules ..> Move
 ChessRules ..> Position
-ChessRules ..> PieceColor
+
+SpecialMovesRegistry *--> ISpecialMove
+
+StandardBoardFactory ..> Board
+StandardBoardFactory ..> Piece
+PromotionFactory ..> Piece
+
+Board o--> Piece : pieces matrix
+Piece --> Position : position
+Piece --> PieceColor : color
+
+Move --> Piece : piece, capturedPiece
+Move --> Position : from, to
+
+ConsoleUI ..> MoveReader
+ConsoleUI ..> BoardPrinter
+
+MenuView --> IUserInterface
+BoardPrinter ..> ConsoleUtils
+
+Board ..> InvalidPositionException
 
 @enduml

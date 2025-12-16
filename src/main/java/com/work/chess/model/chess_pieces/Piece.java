@@ -21,8 +21,14 @@ public abstract class Piece {
 
     public abstract ArrayList <Position> getValidMoves (Board board);
 
-    public boolean isFirstMove() {
+    public boolean isFirstMove () {
         return moveCount == 0;
+    }
+
+    public void decreaseMoveCount () {
+        if (this.moveCount > 0) {
+            this.moveCount--;
+        }
     }
 
     public Position getPosition () {

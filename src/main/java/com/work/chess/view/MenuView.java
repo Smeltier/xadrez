@@ -19,6 +19,7 @@ public class MenuView {
         ui.showMessage("1 - Iniciar nova partida");
         ui.showMessage("2 - Regras do jogo");
         ui.showMessage("3 - Sair");
+        ui.showMessage("Escolha uma opção:");
     }
     
     public static void promotionMenu () {

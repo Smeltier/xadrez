@@ -4,12 +4,17 @@ import main.java.com.work.chess.interfaces.ISpecialMove;
 import main.java.com.work.chess.model.chess_pieces.King;
 import main.java.com.work.chess.model.chess_pieces.Piece;
 import main.java.com.work.chess.model.chess_pieces.Rook;
+import main.java.com.work.chess.controller.ChessRules;
 
 public class Castling implements ISpecialMove {
 
     @Override
     public boolean canExecute (Board board, Move move) {
         if (!(move.getPiece() instanceof King)) {
+            return false;
+        }
+
+        if (ChessRules.isKingInCheck(board, move.getPiece().getColor())) {
             return false;
         }
 
@@ -21,6 +26,13 @@ public class Castling implements ISpecialMove {
         int row = move.getOrigin().getRow ();
         boolean isKingside = move.getDestiny().getCol () > move.getOrigin().getCol ();
         int rookCol = isKingside ? 8 : 1;
+
+        int middleCol = isKingside ? 6 : 4;
+        Position middlePos = new Position(row, middleCol);
+        
+        if (ChessRules.isSquareAttacked(board, middlePos, move.getPiece().getColor())) {
+            return false;
+        }
         
         Piece rook = board.getPieceAt (new Position (row, rookCol));
         

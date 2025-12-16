@@ -50,9 +50,15 @@ public class Game {
             this.isRunning = false;
             return;
         }
+
+        if (ChessRules.isStalemate(board, currentPlayerColor)) {
+            ui.showMessage("\nEMPATE POR AFOGAMENTO (STALEMATE)!");
+            this.isRunning = false;
+            return;
+        }
         
         if (ChessRules.isKingInCheck(board, this.currentPlayerColor)) { 
-            ui.showMessage("\n[AVISO] O REI ESTÁ EM XEQUE!"); 
+            ui.showMessage("\nO REI ESTÁ EM XEQUE!"); 
         }
 
         ui.showMessage("\nÉ a vez de: " + currentPlayer.getName() + " (" + this.currentPlayerColor + ")");

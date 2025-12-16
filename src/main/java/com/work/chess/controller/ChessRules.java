@@ -59,6 +59,55 @@ public class ChessRules {
         return false;
     }
 
+    public static boolean isSquareAttacked(Board board, Position target, PieceColor victimColor) {
+        PieceColor enemyColor = (victimColor == PieceColor.WHITE) ? PieceColor.BLACK : PieceColor.WHITE;
+        List<Piece> enemies = getPiecesByColor(board, enemyColor);
+
+        for (Piece enemy : enemies) {
+            if (enemy instanceof main.java.com.work.chess.model.chess_pieces.Pawn) {
+                int direction = (enemy.getColor() == PieceColor.WHITE) ? 1 : -1;
+
+                if (enemy.getPosition().getRow() + direction == target.getRow() &&
+                    enemy.getPosition().getCol() - 1 == target.getCol()) return true;
+                    
+                if (enemy.getPosition().getRow() + direction == target.getRow() &&
+                    enemy.getPosition().getCol() + 1 == target.getCol()) return true;
+            } 
+            else {
+                List<Position> moves = enemy.getValidMoves(board);
+
+                if (moves.contains(target)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean isStalemate(Board board, PieceColor color) {
+        if (isKingInCheck(board, color)) {
+            return false;
+        }
+
+        List<Piece> myPieces = getPiecesByColor(board, color);
+
+        for (Piece piece : myPieces) {
+            List<Position> potentialMoves = piece.getValidMoves(board);
+
+            for (Position dest : potentialMoves) {
+                Piece capturedContent = board.getPieceAt(dest);
+                Move emulationMove = new Move(piece, piece.getPosition(), dest, capturedContent);
+
+                if (isMoveLegal(board, emulationMove)) {
+                    return false; 
+                }
+            }
+        }
+        
+        return true;
+    }
+
     public static boolean isCheckMate (Board board, PieceColor kingColor) {
         if (!isKingInCheck(board, kingColor)) {
             return false;
@@ -91,6 +140,9 @@ public class ChessRules {
         board.setPieceAt(origin, piece);
         board.setPieceAt(destiny, captured);
         piece.setPosition(origin);
+
+        piece.decreaseMoveCount();
+        piece.decreaseMoveCount();
     }
 
     private static Position findKingPosition (Board board, PieceColor color) {
