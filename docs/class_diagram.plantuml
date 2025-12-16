@@ -1,20 +1,20 @@
 @startuml class_diagram
 
-skinparam linetype ortho
-left to right direction
-skinparam classArrowColor black
-skinparam nodesep 80
-skinparam ranksep 80
+' skinparam linetype ortho
+' left to right direction
+' skinparam classArrowColor black
+' skinparam nodesep 80
+' skinparam ranksep 80
 
-skinparam ClassDiagram {
-    ArrowThickness 1
-    ArrowColor black
-    HorizontalSpacing 60
-    VerticalSpacing 60
-    ArrowFontSize 11
-    ArrowFontColor black
-    ArrowFontStyle plain
-}
+' skinparam ClassDiagram {
+'     ArrowThickness 1
+'     ArrowColor black
+'     HorizontalSpacing 60
+'     VerticalSpacing 60
+'     ArrowFontSize 11
+'     ArrowFontColor black
+'     ArrowFontStyle plain
+' }
 
 class Board {
   - BOARDSIZE : Integer = 8
@@ -29,7 +29,7 @@ class Board {
   + setEnPassantVulnerable(position : Position) : void
 }
 
-class Position {
+class Position <<immutable>> {
   - row : Integer
   - col : Integer
   + Position(row : Integer, col : Integer)
@@ -68,6 +68,9 @@ abstract class Piece {
   + setPosition(newPosition : Position) : void
   + getColor() : PieceColor
   + getSymbol() : String
+  + equals(obj : Object) : boolean
+  + hashCode() : int
+  + toString() : String
 }
 
 abstract class SlidingPiece extends Piece {
@@ -120,17 +123,17 @@ enum PieceType {
   KING
 }
 
-class PromotionFactory {
+class PromotionFactory <<factory>> {
   - PromotionFactory()
   + {static} create(type : PieceType, original : Piece) : Piece
 }
 
-class StandardBoardFactory {
+class StandardBoardFactory <<factory>> {
   + {static} createBoard() : Board
   - {static} setupSide(board : Board, color : PieceColor) : void
 }
 
-class SymbolFactory {
+class SymbolFactory <<factory>> {
   - {static} SYMBOLS : Map<String, String>
   - SymbolFactory()
   + {static} getSymbol(type : PieceType, color : PieceColor) : String
@@ -237,6 +240,10 @@ class ConsoleUI implements IUserInterface {
 class ConsoleUtils <<utility>> {
     + {static} ANSI_RESET : String
     + {static} ANSI_WHITE : String
+    + {static} ANSI_YELLOW : String
+    + {static} ANSI_CYAN : String
+    + {static} ANSI_PURPLE_BACKGROUND : String
+    + {static} ANSI_BLACK_BACKGROUND : String
     - ConsoleUtils()
     + {static} clearScreen() : void
     + {static} defineUTF8() : void
@@ -262,17 +269,13 @@ class ChessApp {
   + start() : void
 }
 
-class Main {
-  + {static} main(args : String[]) : void
-}
-
-Main ..> ChessApp
 ChessApp ..> Game
 ChessApp ..> MenuView
 ChessApp ..> ConsoleUI
 
 Game o--> Board : board
-Game o--> Player : whitePlayer, blackPlayer
+Game o--> Player : whitePlayer
+Game o--> Player : blackPlayer
 Game --> IUserInterface
 Game ..> ChessRules
 Game ..> PieceMover
@@ -293,12 +296,14 @@ StandardBoardFactory ..> Board
 StandardBoardFactory ..> Piece
 PromotionFactory ..> Piece
 
-Board o--> Piece : pieces matrix
+Board o--> Piece : pieces
 Piece --> Position : position
 Piece --> PieceColor : color
 
-Move --> Piece : piece, capturedPiece
-Move --> Position : from, to
+Move --> Piece : piece
+Move --> Piece : capturedPiece
+Move --> Position : to
+Move --> Position : from
 
 ConsoleUI ..> MoveReader
 ConsoleUI ..> BoardPrinter
@@ -307,5 +312,8 @@ MenuView --> IUserInterface
 BoardPrinter ..> ConsoleUtils
 
 Board ..> InvalidPositionException
+
+PromotionFactory ..> PieceType
+SymbolFactory ..> PieceType
 
 @enduml
