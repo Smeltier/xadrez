@@ -18,7 +18,7 @@ public class PromotionFactory {
             case ROOK   -> new Rook(color, pos);
             case BISHOP -> new Bishop(color, pos);
             default -> throw new IllegalArgumentException(
-                "[WARNING]: Tipo de promoção inválido: " + type
+                "Tipo de promoção inválido: " + type
             );
         };
     }
