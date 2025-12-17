@@ -36,7 +36,7 @@ public class Player {
     }
 
     @Override
-    public String toString() {
+    public String toString () {
         return name + " (" + (color != null ? color.toString() : "Cor Indefinida") + ")";
     }
 }

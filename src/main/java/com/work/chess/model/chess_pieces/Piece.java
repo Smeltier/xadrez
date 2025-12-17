@@ -35,7 +35,7 @@ public abstract class Piece {
         return this.position;
     }
 
-    public PieceColor getColor() {
+    public PieceColor getColor () {
         return color;
     }
     

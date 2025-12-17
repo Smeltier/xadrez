@@ -8,7 +8,7 @@ import main.java.com.work.chess.enums.PieceColor;
 public class PromotionFactory {
     private PromotionFactory () {}
 
-    public static Piece create(PieceType type, Piece original) {
+    public static Piece create (PieceType type, Piece original) {
         Position pos = original.getPosition();
         PieceColor color = original.getColor();
 

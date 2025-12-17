@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class SymbolFactory {
 
-    private static final Map<String, String> SYMBOLS = Map.ofEntries(
+    private static final Map <String, String> SYMBOLS = Map.ofEntries(
         Map.entry("QUEEN_WHITE", "♕"),
         Map.entry("QUEEN_BLACK", "♛"),
         Map.entry("KING_WHITE", "♔"),
@@ -22,9 +22,9 @@ public class SymbolFactory {
         Map.entry("PAWN_BLACK", "♟")
     );
 
-    private SymbolFactory() {}
+    private SymbolFactory () {}
 
-    public static String getSymbol(PieceType type, PieceColor color) {
+    public static String getSymbol (PieceType type, PieceColor color) {
         return SYMBOLS.get(type.name() + "_" + color.name());
     }
 }

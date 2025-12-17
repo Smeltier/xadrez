@@ -17,7 +17,7 @@ public class SpecialMovesRegistry {
         specialMoves.add(new Castling());
     }
 
-    public static List<ISpecialMove> getAll() {
+    public static List <ISpecialMove> getAll () {
         return specialMoves;
     }
 }

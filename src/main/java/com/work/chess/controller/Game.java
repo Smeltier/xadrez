@@ -40,7 +40,7 @@ public class Game {
         ui.close();
     }
 
-    private void processTurn() {
+    private void processTurn () {
         ui.showBoard(board);
         Player currentPlayer = (this.currentPlayerColor == PieceColor.WHITE) ? whitePlayer : blackPlayer;
 

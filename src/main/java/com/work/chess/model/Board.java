@@ -31,11 +31,11 @@ public class Board {
         return BOARDSIZE;
     }
 
-    public Position getEnPassantVulnerable() {
+    public Position getEnPassantVulnerable () {
         return enPassantVulnerable;
     }
 
-    public void setEnPassantVulnerable(Position enPassantVulnerable) {
+    public void setEnPassantVulnerable (Position enPassantVulnerable) {
         this.enPassantVulnerable = enPassantVulnerable;
     }
 }

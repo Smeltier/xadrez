@@ -59,7 +59,7 @@ public class ChessRules {
         return false;
     }
 
-    public static boolean isSquareAttacked(Board board, Position target, PieceColor victimColor) {
+    public static boolean isSquareAttacked (Board board, Position target, PieceColor victimColor) {
         PieceColor enemyColor = (victimColor == PieceColor.WHITE) ? PieceColor.BLACK : PieceColor.WHITE;
         List<Piece> enemies = getPiecesByColor(board, enemyColor);
 
@@ -85,7 +85,7 @@ public class ChessRules {
         return false;
     }
 
-    public static boolean isStalemate(Board board, PieceColor color) {
+    public static boolean isStalemate (Board board, PieceColor color) {
         if (isKingInCheck(board, color)) {
             return false;
         }

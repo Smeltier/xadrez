@@ -6,7 +6,7 @@ import main.java.com.work.chess.model.chess_pieces.Pawn;
 public class EnPassant implements ISpecialMove {
 
     @Override
-    public boolean canExecute(Board board, Move move) {
+    public boolean canExecute (Board board, Move move) {
         if (!(move.getPiece() instanceof Pawn)) {
             return false;
         }
@@ -32,7 +32,7 @@ public class EnPassant implements ISpecialMove {
     }
 
     @Override
-    public void execute(Board board, Move move) {
+    public void execute (Board board, Move move) {
         int enemyRow = move.getOrigin().getRow();
         int enemyCol = move.getDestiny().getCol();
         

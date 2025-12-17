@@ -8,9 +8,9 @@ import main.java.com.work.chess.enums.PieceColor;
 
 public class BoardPrinter {
 
-    private BoardPrinter() {}
+    private BoardPrinter () {}
 
-    public static void print(Board board) {
+    public static void print (Board board) {
         ConsoleUtils.clearScreen();
 
         System.out.println("   a  b  c  d  e  f  g  h");
@@ -38,7 +38,7 @@ public class BoardPrinter {
         System.out.println();
     }
 
-    private static void printPiece(Piece piece, String background) {
+    private static void printPiece (Piece piece, String background) {
         if (piece == null) {
             System.out.print(background + "   " + ConsoleUtils.ANSI_RESET);
         } else {

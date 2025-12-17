@@ -43,7 +43,7 @@ public class Pawn extends Piece {
         return validMoves;
     }
 
-    private void checkCaptureMove(ArrayList<Position> moves, Board board, Position targetPosition) {
+    private void checkCaptureMove (ArrayList<Position> moves, Board board, Position targetPosition) {
         if (board.isOnLimits(targetPosition)) {
             Piece pieceAtTarget = board.getPieceAt(targetPosition);
 

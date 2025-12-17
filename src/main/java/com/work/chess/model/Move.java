@@ -10,26 +10,26 @@ public class Move {
     private final Position from;
     private final Position to;
 
-    public Move(Piece piece, Position from, Position to, Piece capturedPiece) {
+    public Move (Piece piece, Position from, Position to, Piece capturedPiece) {
         this.piece = piece;
         this.from = from;
         this.to = to;
         this.capturedPiece = capturedPiece;
     }
 
-    public Piece getCapturedPiece() {
+    public Piece getCapturedPiece () {
         return capturedPiece;
     }
 
-    public Position getOrigin() {
+    public Position getOrigin () {
         return from;
     }
 
-    public Piece getPiece() {
+    public Piece getPiece () {
         return piece;
     }
 
-    public Position getDestiny() {
+    public Position getDestiny () {
         return to;
     }
 

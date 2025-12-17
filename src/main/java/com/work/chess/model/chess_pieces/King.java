@@ -10,12 +10,12 @@ import main.java.com.work.chess.model.Position;
 
 public class King extends Piece {
 
-    public King(PieceColor color, Position position) {
+    public King (PieceColor color, Position position) {
         super(SymbolFactory.getSymbol(PieceType.KING, color), color, position);
     }
 
     @Override
-    public ArrayList<Position> getValidMoves(Board board) {
+    public ArrayList <Position> getValidMoves (Board board) {
         ArrayList<Position> validMoves = new ArrayList<>();
         int[][] directions = {
             {-1, -1}, {-1, 0}, {-1, 1},

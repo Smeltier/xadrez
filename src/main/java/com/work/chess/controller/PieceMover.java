@@ -8,9 +8,9 @@ import main.java.com.work.chess.model.Move;
 
 public class PieceMover {
 
-    private PieceMover() {}
+    private PieceMover () {}
 
-    public static void move(Board board, Move move, List<ISpecialMove> specials) {
+    public static void move (Board board, Move move, List<ISpecialMove> specials) {
         ISpecialMove specialMoveToExecute = null;
         
         for (ISpecialMove s : specials) {
@@ -27,7 +27,7 @@ public class PieceMover {
         }
     }   
 
-    private static void applyMove(Board board, Move move) {
+    private static void applyMove (Board board, Move move) {
         try {
             board.setPieceAt(move.getOrigin(), null);
             move.getPiece().setPosition(move.getDestiny());

@@ -13,7 +13,7 @@ import main.java.com.work.chess.view.MenuView;
 public class Promotion implements ISpecialMove {
 
     @Override
-    public boolean canExecute(Board board, Move move) {
+    public boolean canExecute (Board board, Move move) {
         if (!(move.getPiece() instanceof Pawn)) {
             return false;
         }
@@ -33,7 +33,7 @@ public class Promotion implements ISpecialMove {
     }
 
     @Override
-    public void execute(Board board, Move move) {
+    public void execute (Board board, Move move) {
         MenuView.promotionMenu();
         
         @SuppressWarnings("resource") 

@@ -31,6 +31,7 @@ public class StandardBoardFactory {
             for (int i = 1; i <= 8; i++) {
                 board.setPieceAt (new Position (pawnRow, i), new Pawn (color, new Position (pawnRow, i)));
             }
+            
         } catch (Exception e) {
             throw new RuntimeException (e.getMessage ());
         }
