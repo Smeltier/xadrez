@@ -17,14 +17,15 @@ skinparam ClassDiagram {
 }
 
 class Board <<entity>> {
-  - BOARDSIZE : Integer = 8
+  - boardsize : Integer
   - board : Piece[][]
   - enPassantVulnerable : Position
-  + Board()
+  + Board(size: Integer)
   + getPieceAt(position : Position) : Piece
   + setPieceAt(position : Position, piece : Piece) : void
   + isOnLimits(position : Position) : boolean
-  + getBOARDSIZE() : Integer
+  + getBoardsize() : Integer
+  + setBoardsize(boardsize: Integer) : void
   + getEnPassantVulnerable() : Position
   + setEnPassantVulnerable(position : Position) : void
 }
