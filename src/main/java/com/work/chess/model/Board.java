@@ -5,11 +5,12 @@ import main.java.com.work.chess.model.chess_pieces.Piece;
 
 public class Board {
     private Integer boardsize;
-    private Piece[][] board = new Piece[boardsize][boardsize];
+    private Piece[][] board;
     private Position enPassantVulnerable;
 
     public Board (Integer size) throws IllegalArgumentException {
         this.setBoardsize(size);
+        this.board = new Piece[boardsize][boardsize];
     }
 
     public Piece getPieceAt (Position position) {

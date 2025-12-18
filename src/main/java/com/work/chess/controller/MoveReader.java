@@ -14,7 +14,7 @@ public class MoveReader {
         String[] parts = input.trim().split("\\s+");
 
         if (parts.length != 2) {
-            throw new IllegalArgumentException("Entrada inválida. Digite origem e destino (ex: a2 a4).");
+            throw new IllegalArgumentException("Entrada inválida. Digite origem e destino.");
         }
 
         Position from = convertStringToPosition(parts[0]);

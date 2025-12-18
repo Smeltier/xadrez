@@ -76,7 +76,7 @@ public class Game {
             Move move = new Move(piece, from, to, capturedPiece);
             
             if (!ChessRules.isMoveLegal(board, move)) {
-                ui.showError("Movimento ilegal ou coloca seu rei em risco.");
+                ui.showMessageWithTimming("Movimento ilegal ou coloca seu rei em risco.", 1000);
                 return;
             }
 
@@ -100,7 +100,7 @@ public class Game {
             this.switchTurn();
 
         } catch (IllegalArgumentException e) {
-            ui.showError(e.getMessage());
+            ui.showMessageWithTimming(e.getMessage(), 1000);
         }
     }
 
