@@ -25,6 +25,15 @@ public class ConsoleUI implements IUserInterface {
     }
 
     @Override
+    public void showMessageWithTimming (String message, int delay) {
+        System.out.println(message);
+
+        try {
+            Thread.sleep(delay);
+        } catch (Exception e) {}
+    }
+
+    @Override
     public void showError (String error) {
         System.out.println("[ERRO]: " + error);
     }
