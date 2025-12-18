@@ -1,22 +1,22 @@
 @startuml class_diagram
 
-' skinparam linetype ortho
-' left to right direction
-' skinparam classArrowColor black
-' skinparam nodesep 80
-' skinparam ranksep 80
+skinparam linetype ortho
+left to right direction
+skinparam classArrowColor black
+skinparam nodesep 80
+skinparam ranksep 80
 
-' skinparam ClassDiagram {
-'     ArrowThickness 1
-'     ArrowColor black
-'     HorizontalSpacing 60
-'     VerticalSpacing 60
-'     ArrowFontSize 11
-'     ArrowFontColor black
-'     ArrowFontStyle plain
-' }
+skinparam ClassDiagram {
+    ArrowThickness 1
+    ArrowColor black
+    HorizontalSpacing 60
+    VerticalSpacing 60
+    ArrowFontSize 11
+    ArrowFontColor black
+    ArrowFontStyle plain
+}
 
-class Board {
+class Board <<entity>> {
   - BOARDSIZE : Integer = 8
   - board : Piece[][]
   - enPassantVulnerable : Position
@@ -40,7 +40,7 @@ class Position <<immutable>> {
   + toString() : String
 }
 
-class Move {
+class Move <<immutable>> {
   - piece : Piece
   - capturedPiece : Piece
   - from : Position
@@ -55,7 +55,7 @@ class Move {
   + toString() : String
 }
 
-abstract class Piece {
+abstract class Piece <<entity>> {
   - symbol : String
   # moveCount : Integer
   # color : PieceColor
@@ -80,33 +80,27 @@ abstract class SlidingPiece extends Piece {
 
 class Bishop extends SlidingPiece {
   + Bishop(color : PieceColor, position : Position)
-  + getValidMoves(board : Board) : ArrayList<Position>
 }
 
 class Rook extends SlidingPiece {
   + Rook(color : PieceColor, position : Position)
-  + getValidMoves(board : Board) : ArrayList<Position>
 }
 
 class Queen extends SlidingPiece {
   + Queen(color : PieceColor, position : Position)
-  + getValidMoves(board : Board) : ArrayList<Position>
 }
 
 class Pawn extends Piece {
   + Pawn(color : PieceColor, position : Position)
-  + getValidMoves(board : Board) : ArrayList<Position>
   - checkCaptureMove(moves : ArrayList<Position>, board : Board, targetPosition : Position) : void
 }
 
 class Knight extends Piece {
   + Knight(color : PieceColor, position : Position)
-  + getValidMoves(board : Board) : ArrayList<Position>
 }
 
 class King extends Piece {
   + King(color : PieceColor, position : Position)
-  + getValidMoves(board : Board) : ArrayList<Position>
 }
 
 enum PieceColor {
@@ -151,18 +145,12 @@ interface ISpecialMove {
 }
 
 class EnPassant implements ISpecialMove {
-  + canExecute(board : Board, move : Move) : boolean
-  + execute(board : Board, move : Move) : void
 }
 
 class Castling implements ISpecialMove {
-  + canExecute(board : Board, move : Move) : boolean
-  + execute(board : Board, move : Move) : void
 }
 
 class Promotion implements ISpecialMove {
-  + canExecute(board : Board, move : Move) : boolean
-  + execute(board : Board, move : Move) : void
 }
 
 class SpecialMovesRegistry {
@@ -170,7 +158,7 @@ class SpecialMovesRegistry {
     + {static} getAll() : List<ISpecialMove>
 }
 
-class ChessRules {
+class ChessRules <<utility>> {
   - ChessRules()
   + {static} isMoveLegal(board : Board, move: Move) : boolean
   + {static} isKingInCheck(board : Board, kingColor : PieceColor) : boolean
@@ -188,13 +176,13 @@ class PieceMover {
   - {static} applyMove(board : Board, move : Move) : void
 }
 
-class MoveReader {
+class MoveReader <<utility>> {
   - MoveReader()
   + {static} parse(input : String) : Position[]
   - {static} convertStringToPosition(s : String) : Position
 }
 
-class Player {
+class Player <<immutable>> {
     - name : String
     - color : PieceColor
     + Player(name : String, color : PieceColor)
@@ -202,7 +190,7 @@ class Player {
     + getColor() : PieceColor
 }
 
-class Game {
+class Game <<control>> {
   - board : Board
   - ui : IUserInterface
   - isRunning : boolean
@@ -220,6 +208,7 @@ class Game {
 interface IUserInterface {
   + showBoard(board : Board) : void
   + showMessage(message : String) : void
+  + showMessageWithTimming (message: String, delay: int) : void
   + showError(error : String) : void
   + readInput(prompt : String) : String
   + readMove() : Position[]
@@ -229,12 +218,6 @@ interface IUserInterface {
 class ConsoleUI implements IUserInterface {
   - sc : Scanner
   + ConsoleUI()
-  + showBoard(board : Board) : void
-  + showMessage(message : String) : void
-  + showError(error : String) : void
-  + readInput(prompt : String) : String
-  + readMove() : Position[]
-  + close() : void
 }
 
 class ConsoleUtils <<utility>> {
@@ -269,51 +252,42 @@ class ChessApp {
   + start() : void
 }
 
-ChessApp ..> Game
+ChessApp *--> "1" Game
 ChessApp ..> MenuView
-ChessApp ..> ConsoleUI
-
-Game o--> Board : board
-Game o--> Player : whitePlayer
-Game o--> Player : blackPlayer
-Game --> IUserInterface
+ChessApp *--> "1" IUserInterface
+Game o--> "1" Board 
+Game *--> "1" Player 
+Game *--> "1" Player 
+Game o--> "1" IUserInterface
 Game ..> ChessRules
 Game ..> PieceMover
 Game ..> SpecialMovesRegistry
-
 PieceMover ..> ISpecialMove
 PieceMover ..> Board
 PieceMover ..> Move
-
 ChessRules ..> Board
 ChessRules ..> Piece
 ChessRules ..> Move
 ChessRules ..> Position
-
-SpecialMovesRegistry *--> ISpecialMove
-
+SpecialMovesRegistry *--> "0..*" ISpecialMove
 StandardBoardFactory ..> Board
 StandardBoardFactory ..> Piece
 PromotionFactory ..> Piece
-
-Board o--> Piece : pieces
-Piece --> Position : position
-Piece --> PieceColor : color
-
-Move --> Piece : piece
-Move --> Piece : capturedPiece
-Move --> Position : to
-Move --> Position : from
-
+Board o--> "0..*" Piece
+Piece o--> "1" Position 
+Piece o--> "1" PieceColor 
+Piece ..> Board: use
+Move --> Piece
+Move --> Position
 ConsoleUI ..> MoveReader
 ConsoleUI ..> BoardPrinter
-
 MenuView --> IUserInterface
 BoardPrinter ..> ConsoleUtils
-
-Board ..> InvalidPositionException
-
-PromotionFactory ..> PieceType
-SymbolFactory ..> PieceType
+Board ..> InvalidPositionException: throws
+PromotionFactory ..> PieceType: use
+SymbolFactory ..> PieceType: use
+EnPassant ..> Pawn
+Castling ..> King
+Promotion ..> Pawn
 
 @enduml
