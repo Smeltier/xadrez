@@ -19,7 +19,7 @@ public class Promotion implements ISpecialMove {
         }
 
         int row = move.getDestiny().getRow();
-        int boardSize = board.getBOARDSIZE();
+        int boardSize = board.getBoardsize();
         
         if (move.getPiece().getColor() == PieceColor.WHITE && row == boardSize) {
             return true;

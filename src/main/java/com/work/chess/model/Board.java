@@ -4,11 +4,13 @@ import main.java.com.work.chess.exceptions.InvalidPositionException;
 import main.java.com.work.chess.model.chess_pieces.Piece;
 
 public class Board {
-    private final Integer BOARDSIZE = 8;
-    private Piece[][] board = new Piece[BOARDSIZE][BOARDSIZE];
+    private Integer boardsize;
+    private Piece[][] board = new Piece[boardsize][boardsize];
     private Position enPassantVulnerable;
 
-    public Board () {}
+    public Board (Integer size) throws IllegalArgumentException {
+        this.setBoardsize(size);
+    }
 
     public Piece getPieceAt (Position position) {
         return board[position.getRow() - 1][position.getCol() - 1];
@@ -24,15 +26,23 @@ public class Board {
     public boolean isOnLimits (Position position) {
         int row = position.getRow() - 1;
         int col = position.getCol() - 1;
-        return row >= 0 && row < this.BOARDSIZE && col >= 0 && col < this.BOARDSIZE;
+        return row >= 0 && row < this.boardsize && col >= 0 && col < this.boardsize;
     }
 
-    public Integer getBOARDSIZE () {
-        return BOARDSIZE;
+    public Integer getBoardsize () {
+        return boardsize;
     }
 
     public Position getEnPassantVulnerable () {
         return enPassantVulnerable;
+    }
+
+    public void setBoardsize(Integer boardsize) throws IllegalArgumentException {
+        if (boardsize <= 0) {
+            throw new IllegalArgumentException("Tamanho inválido para o tabuleiro");
+        }
+
+        this.boardsize = boardsize;
     }
 
     public void setEnPassantVulnerable (Position enPassantVulnerable) {

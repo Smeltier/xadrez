@@ -8,10 +8,14 @@ import main.java.com.work.chess.model.chess_pieces.*;
 public class StandardBoardFactory {
 
     public static Board createBoard () {
-        Board board = new Board ();
-        setupSide (board, PieceColor.WHITE);
-        setupSide (board, PieceColor.BLACK);
-        return board;
+        try {
+            Board board = new Board (8);
+            setupSide (board, PieceColor.WHITE);
+            setupSide (board, PieceColor.BLACK);
+            return board;
+        } catch (Exception e) {}
+
+        return null;
     }
 
     private static void setupSide (Board board, PieceColor color) {
