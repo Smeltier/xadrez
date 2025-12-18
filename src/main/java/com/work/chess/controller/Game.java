@@ -46,13 +46,13 @@ public class Game {
 
         if (ChessRules.isCheckMate(board, currentPlayerColor)) {
             ui.showMessage("\nXEQUE-MATE!");
-            ui.showMessage("Vencedor: " + ((currentPlayerColor == PieceColor.WHITE) ? blackPlayer.getName() : whitePlayer.getName()));
+            ui.showMessageWithTimming("Vencedor: " + ((currentPlayerColor == PieceColor.WHITE) ? blackPlayer.getName() : whitePlayer.getName()), 10000);
             this.isRunning = false;
             return;
         }
 
         if (ChessRules.isStalemate(board, currentPlayerColor)) {
-            ui.showMessage("\nEMPATE POR AFOGAMENTO (STALEMATE)!");
+            ui.showMessageWithTimming("\nEMPATE POR AFOGAMENTO (STALEMATE)!", 10000);
             this.isRunning = false;
             return;
         }
@@ -89,6 +89,7 @@ public class Game {
                     int middleRow = (from.getRow() + to.getRow()) / 2;
                     Position enPassantTarget = new Position(middleRow, from.getCol());
                     board.setEnPassantVulnerable(enPassantTarget);
+                    
                 } else {
                     board.setEnPassantVulnerable(null);
                 }
