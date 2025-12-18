@@ -36,8 +36,8 @@ public class Game {
                 ui.showError("Erro inesperado: " + e.getMessage());
             }
         }
+
         ui.showMessage("Fim do Jogo.");
-        ui.close();
     }
 
     private void processTurn () {
